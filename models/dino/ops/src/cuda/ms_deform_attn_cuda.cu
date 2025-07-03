@@ -89,6 +89,7 @@ std::vector<at::Tensor> ms_deform_attn_cuda_backward(
     const at::Tensor &grad_output,
     const int im2col_step)
 {
+    std::cout << typeid(value).name() << std::endl;
 
     AT_ASSERTM(value.is_contiguous(), "value tensor has to be contiguous");
     AT_ASSERTM(spatial_shapes.is_contiguous(), "spatial_shapes tensor has to be contiguous");
