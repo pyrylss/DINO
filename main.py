@@ -279,24 +279,24 @@ def main(args):
 
         if not args.onecyclelr:
             lr_scheduler.step()
-        if args.output_dir:
-            checkpoint_paths = [output_dir / 'checkpoint.pth']
-            # extra checkpoint before LR drop and every 100 epochs
-            if (epoch + 1) % args.lr_drop == 0 or (epoch + 1) % args.save_checkpoint_interval == 0:
-                checkpoint_paths.append(output_dir / f'checkpoint{epoch:04}.pth')
-            for checkpoint_path in checkpoint_paths:
-                weights = {
-                    'model': model_without_ddp.state_dict(),
-                    'optimizer': optimizer.state_dict(),
-                    'lr_scheduler': lr_scheduler.state_dict(),
-                    'epoch': epoch,
-                    'args': args,
-                }
-                if args.use_ema:
-                    weights.update({
-                        'ema_model': ema_m.module.state_dict(),
-                    })
-                utils.save_on_master(weights, checkpoint_path)
+        # if args.output_dir:
+        #     checkpoint_paths = [output_dir / 'checkpoint.pth']
+        #     # extra checkpoint before LR drop and every 100 epochs
+        #     if (epoch + 1) % args.lr_drop == 0 or (epoch + 1) % args.save_checkpoint_interval == 0:
+        #         checkpoint_paths.append(output_dir / f'checkpoint{epoch:04}.pth')
+        #     for checkpoint_path in checkpoint_paths:
+        #         weights = {
+        #             'model': model_without_ddp.state_dict(),
+        #             'optimizer': optimizer.state_dict(),
+        #             'lr_scheduler': lr_scheduler.state_dict(),
+        #             'epoch': epoch,
+        #             'args': args,
+        #         }
+        #         if args.use_ema:
+        #             weights.update({
+        #                 'ema_model': ema_m.module.state_dict(),
+        #             })
+        #         utils.save_on_master(weights, checkpoint_path)
                 
         # eval
         test_stats, coco_evaluator = evaluate(
